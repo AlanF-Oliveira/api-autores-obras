@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -26,4 +27,6 @@ public class Autor {
     private String paisDeOrigem;
     @Column(unique = true)
     private String cpf;
+    @ManyToMany
+    private List<Obra> obras;
 }
