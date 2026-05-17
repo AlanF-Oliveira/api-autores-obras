@@ -1,6 +1,6 @@
 package com.alan.api_autores_obras.dto.autor;
 
-import com.alan.api_autores_obras.dto.obra.ObraResumoResponse;
+import com.alan.api_autores_obras.dto.obra.ObraResumeResponse;
 import com.alan.api_autores_obras.enums.Sexo;
 import lombok.*;
 
@@ -18,5 +18,5 @@ public class AutorResponse {
     private LocalDate dataNascimento;
     private String paisDeOrigem;
     private String cpf;
-    private List<ObraResumoResponse> obras;
+    private List<ObraResumeResponse> obras;
 }

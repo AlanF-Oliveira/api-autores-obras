@@ -1,6 +1,6 @@
 package com.alan.api_autores_obras.dto.obra;
 
-import com.alan.api_autores_obras.dto.autor.AutorResumoResponse;
+import com.alan.api_autores_obras.dto.autor.AutorResumeResponse;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,5 +15,5 @@ public class ObraResponse {
     private String descricao;
     private LocalDate dataPublicacao;
     private LocalDate dataExposicao;
-    List<AutorResumoResponse> autores;
+    List<AutorResumeResponse> autores;
 }
