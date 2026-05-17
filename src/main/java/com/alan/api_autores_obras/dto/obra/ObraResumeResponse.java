@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class ObraResumoResponse {
+public class ObraResumeResponse {
     private Long id;
     private String nome;
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class AutorResumoResponse {
+public class AutorResumeResponse {
     private Long id;
     private String nome;
     private LocalDate dataNascimento;
