@@ -37,7 +37,7 @@ public class AutorService {
         return mapper.toResponse(entity);
     }
 
-    public AutorResumeResponse mostrarAutorPorId(Long id) {
+    public AutorResumeResponse buscarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
         return mapper.toResumoResponse(entity);
@@ -49,7 +49,8 @@ public class AutorService {
     }
 
     public AutorResponse atualizarAutor(Long id, AutorUpdateRequest request) {
-        Autor entity = autorRepository.findById(id).orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+        Autor entity = autorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
         validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         if (request.getObrasId() != null) {
             List<Obra> obras = obraRepository.findAllById(request.getObrasId());
