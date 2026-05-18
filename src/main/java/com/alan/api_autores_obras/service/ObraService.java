@@ -1,6 +1,5 @@
 package com.alan.api_autores_obras.service;
 
-import com.alan.api_autores_obras.dto.autor.AutorResumeResponse;
 import com.alan.api_autores_obras.dto.obra.ObraRequest;
 import com.alan.api_autores_obras.dto.obra.ObraResponse;
 import com.alan.api_autores_obras.dto.obra.ObraResumeResponse;
@@ -30,7 +29,7 @@ public class ObraService {
         }
     }
 
-    public ObraResponse criarObra(ObraRequest request) {
+    public ObraResponse cadastrarObra(ObraRequest request) {
         validarDataPublicacaoOuExposicao(request.getDataPublicacao(), request.getDataExposicao());
         Obra entity = mapper.toEntity(request);
         List<Autor> autores = autorRepository.findAllById(request.getAutorId());
