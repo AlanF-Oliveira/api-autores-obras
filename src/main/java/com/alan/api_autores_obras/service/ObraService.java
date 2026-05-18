@@ -12,6 +12,7 @@ import com.alan.api_autores_obras.repository.ObraRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ObraService {
         }
     }
 
+    @Transactional
     public ObraResponse cadastrarObra(ObraRequest request) {
         validarDataPublicacaoOuExposicao(request.getDataPublicacao(), request.getDataExposicao());
         Obra entity = mapper.toEntity(request);
@@ -38,17 +40,19 @@ public class ObraService {
         return mapper.toResponse(entity);
     }
 
-    public ObraResumeResponse buscarObraPorId(Long id) {
+    @Transactional
+    public ObraResponse buscarObraPorId(Long id) {
         Obra entity = obraRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Obra não encontrada."));
-        return mapper.toResumoResponse(entity);
+        return mapper.toResponse(entity);
     }
+
 
     public List<ObraResumeResponse> mostrarTodasAsObras() {
         List<Obra> obras = obraRepository.findAll();
         return mapper.toResumoResponseList(obras);
     }
-
+    @Transactional
     public ObraResponse atualizarObraPorId(Long id, ObraUpdateRequest request) {
         Obra entity = obraRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Obra não encontrada."));

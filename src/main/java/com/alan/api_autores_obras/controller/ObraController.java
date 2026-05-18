@@ -25,7 +25,7 @@ public class ObraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ObraResumeResponse> buscarObraPorId(@PathVariable Long id) {
+    public ResponseEntity<ObraResponse> buscarObraPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(obraService.buscarObraPorId(id));
     }
 
