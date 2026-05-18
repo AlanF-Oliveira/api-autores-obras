@@ -13,7 +13,6 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -23,48 +22,50 @@ public class AutorService {
     private final ObraRepository obraRepository;
     private final AutorMapper mapper;
 
-    public AutorResponse criarAutor(AutorRequest request) {
-        if (("Brasil".equalsIgnoreCase(request.getPaisDeOrigem()) || "Brazil".equalsIgnoreCase(request.getPaisDeOrigem())) && request.getCpf() == null) {
+    private void validarCpfAutorBrasileiro(String pais, String cpf) {
+        if (("Brasil".equalsIgnoreCase(pais) || "Brazil".equalsIgnoreCase(pais)) && cpf == null) {
             throw new ValidationException("CPF obrigatório para autores do Brasil");
         }
+    }
+
+    public AutorResponse criarAutor(AutorRequest request) {
+        validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         Autor entity = mapper.toEntity(request);
         List<Obra> obras = obraRepository.findAllById(request.getObrasId());
         entity.setObras(obras);
-        Autor savedAutor = autorRepository.save(entity);
-        return mapper.toResponse(savedAutor);
+        autorRepository.save(entity);
+        return mapper.toResponse(entity);
     }
 
-    public AutorResumeResponse mostrarAutorPorId(Long id){
+    public AutorResumeResponse mostrarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
         return mapper.toResumoResponse(entity);
     }
 
-    public List<AutorResumeResponse> mostrarTodosOsAutores(){
-        List <Autor> autores = autorRepository.findAll();
+    public List<AutorResumeResponse> mostrarTodosOsAutores() {
+        List<Autor> autores = autorRepository.findAll();
         return mapper.toResumoResponseList(autores);
     }
 
-    public AutorResponse atualizarAutor(Long id, AutorUpdateRequest request){
+    public AutorResponse atualizarAutor(Long id, AutorUpdateRequest request) {
         Autor entity = autorRepository.findById(id).orElseThrow(() -> new RuntimeException("Autor não encontrado"));
-        if (("Brasil".equalsIgnoreCase(request.getPaisDeOrigem()) || "Brazil".equalsIgnoreCase(request.getPaisDeOrigem())) && request.getCpf() == null) {
-            throw new ValidationException("CPF obrigatório para autores do Brasil");
-        }
+        validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         if (request.getObrasId() != null) {
             List<Obra> obras = obraRepository.findAllById(request.getObrasId());
             entity.setObras(obras);
         }
-        if(request.getNome() != null) entity.setNome(request.getNome());
-        if(request.getEmail() != null)entity.setEmail(request.getEmail());
-        if(request.getCpf() != null) entity.setCpf(request.getCpf());
-        if(request.getSexo() != null)entity.setSexo(request.getSexo());
-        if(request.getDataNascimento() != null) entity.setDataNascimento(request.getDataNascimento());
-        if(request.getPaisDeOrigem() != null)entity.setPaisDeOrigem(request.getPaisDeOrigem());
-        Autor savedAutor = autorRepository.save(entity);
-        return mapper.toResponse(savedAutor);
+        if (request.getNome() != null) entity.setNome(request.getNome());
+        if (request.getEmail() != null) entity.setEmail(request.getEmail());
+        if (request.getCpf() != null) entity.setCpf(request.getCpf());
+        if (request.getSexo() != null) entity.setSexo(request.getSexo());
+        if (request.getDataNascimento() != null) entity.setDataNascimento(request.getDataNascimento());
+        if (request.getPaisDeOrigem() != null) entity.setPaisDeOrigem(request.getPaisDeOrigem());
+        autorRepository.save(entity);
+        return mapper.toResponse(entity);
     }
 
-    public void deletarAutorPorId(Long id){
+    public void deletarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
         entity.setObras(null);
