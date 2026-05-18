@@ -28,7 +28,7 @@ public class AutorService {
         }
     }
 
-    public AutorResponse criarAutor(AutorRequest request) {
+    public AutorResponse cadastrarAutor(AutorRequest request) {
         validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         Autor entity = mapper.toEntity(request);
         List<Obra> obras = obraRepository.findAllById(request.getObrasId());
