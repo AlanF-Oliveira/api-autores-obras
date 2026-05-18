@@ -12,6 +12,7 @@ import com.alan.api_autores_obras.repository.ObraRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class AutorService {
         }
     }
 
-    public AutorResponse criarAutor(AutorRequest request) {
+    @Transactional
+    public AutorResponse cadastrarAutor(AutorRequest request) {
         validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         Autor entity = mapper.toEntity(request);
         List<Obra> obras = obraRepository.findAllById(request.getObrasId());
@@ -37,10 +39,11 @@ public class AutorService {
         return mapper.toResponse(entity);
     }
 
-    public AutorResumeResponse buscarAutorPorId(Long id) {
+    @Transactional
+    public AutorResponse buscarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
-        return mapper.toResumoResponse(entity);
+        return mapper.toResponse(entity);
     }
 
     public List<AutorResumeResponse> mostrarTodosOsAutores() {
@@ -48,6 +51,7 @@ public class AutorService {
         return mapper.toResumoResponseList(autores);
     }
 
+    @Transactional
     public AutorResponse atualizarAutor(Long id, AutorUpdateRequest request) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
