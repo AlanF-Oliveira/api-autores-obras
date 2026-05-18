@@ -5,11 +5,13 @@ import com.alan.api_autores_obras.dto.obra.ObraResponse;
 import com.alan.api_autores_obras.dto.obra.ObraResumeResponse;
 import com.alan.api_autores_obras.entity.Obra;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ObraMapper {
+    @Mapping(target = "autores", ignore = true)
     Obra toEntity (ObraRequest request);
 
     ObraResponse toResponse (Obra obra);

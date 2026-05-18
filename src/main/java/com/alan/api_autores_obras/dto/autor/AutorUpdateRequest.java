@@ -1,7 +1,6 @@
 package com.alan.api_autores_obras.dto.autor;
 
 import com.alan.api_autores_obras.enums.Sexo;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,16 +11,11 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class AutorRequest {
-    @NotBlank
+public class AutorUpdateRequest {
     private String nome;
     private Sexo sexo;
-    @NotBlank
-    @Email
     private String email;
-    @Past
     private LocalDate dataNascimento;
-    @NotBlank
     private String paisDeOrigem;
     private String cpf;
     private List<Long> obrasId;
