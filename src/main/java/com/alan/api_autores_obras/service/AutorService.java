@@ -39,10 +39,11 @@ public class AutorService {
         return mapper.toResponse(entity);
     }
 
-    public AutorResumeResponse buscarAutorPorId(Long id) {
+    @Transactional
+    public AutorResponse buscarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
-        return mapper.toResumoResponse(entity);
+        return mapper.toResponse(entity);
     }
 
     public List<AutorResumeResponse> mostrarTodosOsAutores() {

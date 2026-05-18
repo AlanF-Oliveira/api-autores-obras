@@ -10,4 +10,5 @@ import lombok.*;
 public class ObraResumeResponse {
     private Long id;
     private String nome;
+    private String descricao;
 }

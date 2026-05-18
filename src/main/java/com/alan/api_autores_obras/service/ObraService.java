@@ -37,6 +37,8 @@ public class ObraService {
         List<Autor> autores = autorRepository.findAllById(request.getAutorId());
         entity.setAutores(autores);
         obraRepository.save(entity);
+        autores.forEach(autor -> autor.getObras().add(entity));
+        autorRepository.saveAll(autores);
         return mapper.toResponse(entity);
     }
 
@@ -59,6 +61,9 @@ public class ObraService {
         if (request.getAutorId() != null) {
             List<Autor> autores = autorRepository.findAllById(request.getAutorId());
             entity.setAutores(autores);
+            autores.forEach(autor -> autor.getObras().add(entity));
+            autorRepository.saveAll(autores);
+
         }
         if (request.getNome() != null) entity.setNome(request.getNome());
         if (request.getDescricao() != null) entity.setDescricao(request.getDescricao());

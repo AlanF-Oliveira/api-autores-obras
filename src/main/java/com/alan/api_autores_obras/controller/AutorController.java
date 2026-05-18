@@ -25,7 +25,7 @@ public class AutorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AutorResumeResponse> buscarAutorPorId(@PathVariable Long id) {
+    public ResponseEntity<AutorResponse> buscarAutorPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(autorService.buscarAutorPorId(id));
     }
 
