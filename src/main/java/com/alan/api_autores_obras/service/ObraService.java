@@ -6,6 +6,7 @@ import com.alan.api_autores_obras.dto.obra.ObraResumeResponse;
 import com.alan.api_autores_obras.dto.obra.ObraUpdateRequest;
 import com.alan.api_autores_obras.entity.Autor;
 import com.alan.api_autores_obras.entity.Obra;
+import com.alan.api_autores_obras.exception.ResourceNotFoundException;
 import com.alan.api_autores_obras.mapper.ObraMapper;
 import com.alan.api_autores_obras.repository.AutorRepository;
 import com.alan.api_autores_obras.repository.ObraRepository;
@@ -45,7 +46,7 @@ public class ObraService {
     @Transactional
     public ObraResponse buscarObraPorId(Long id) {
         Obra entity = obraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Obra não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Obra não encontrada."));
         return mapper.toResponse(entity);
     }
 
@@ -57,7 +58,7 @@ public class ObraService {
     @Transactional
     public ObraResponse atualizarObraPorId(Long id, ObraUpdateRequest request) {
         Obra entity = obraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Obra não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Obra não encontrada."));
         if (request.getAutorId() != null) {
             List<Autor> autores = autorRepository.findAllById(request.getAutorId());
             entity.setAutores(autores);
@@ -75,7 +76,7 @@ public class ObraService {
 
     public void deletarObraPorId(Long id){
         Obra entity = obraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Obra não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Obra não encontrada."));
         entity.setAutores(null);
         obraRepository.save(entity);
         obraRepository.delete(entity);
