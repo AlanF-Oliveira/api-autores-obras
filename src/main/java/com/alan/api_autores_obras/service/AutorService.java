@@ -6,6 +6,7 @@ import com.alan.api_autores_obras.dto.autor.AutorResumeResponse;
 import com.alan.api_autores_obras.dto.autor.AutorUpdateRequest;
 import com.alan.api_autores_obras.entity.Autor;
 import com.alan.api_autores_obras.entity.Obra;
+import com.alan.api_autores_obras.exception.ResourceNotFoundException;
 import com.alan.api_autores_obras.mapper.AutorMapper;
 import com.alan.api_autores_obras.repository.AutorRepository;
 import com.alan.api_autores_obras.repository.ObraRepository;
@@ -42,7 +43,7 @@ public class AutorService {
     @Transactional
     public AutorResponse buscarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));
         return mapper.toResponse(entity);
     }
 
@@ -54,7 +55,7 @@ public class AutorService {
     @Transactional
     public AutorResponse atualizarAutor(Long id, AutorUpdateRequest request) {
         Autor entity = autorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));
         validarCpfAutorBrasileiro(request.getPaisDeOrigem(), request.getCpf());
         if (request.getObrasId() != null) {
             List<Obra> obras = obraRepository.findAllById(request.getObrasId());
@@ -72,7 +73,7 @@ public class AutorService {
 
     public void deletarAutorPorId(Long id) {
         Autor entity = autorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));
         entity.setObras(null);
         autorRepository.save(entity);
         autorRepository.delete(entity);
