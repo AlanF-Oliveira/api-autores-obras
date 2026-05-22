@@ -1,4 +1,4 @@
-package com.alan.api_autores_obras.service;
+package com.alan.api_autores_obras.security;
 
 import com.alan.api_autores_obras.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
