@@ -1,5 +1,6 @@
 package com.alan.api_autores_obras.service;
 
+import com.alan.api_autores_obras.dto.auth.AuthResponse;
 import com.alan.api_autores_obras.dto.auth.CadastroRequest;
 import com.alan.api_autores_obras.entity.Usuario;
 import com.alan.api_autores_obras.exception.ConflictException;
@@ -19,8 +20,12 @@ public class AuthService {
     private final JwtService jwtService;
 
 
-    public Usuario cadastrarUsuario(CadastroRequest request){
-        usuarioRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ConflictException("Email existente!"));
+    public AuthResponse cadastrarUsuario(CadastroRequest request) {
+        if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ConflictException("Email já cadastrado!");
+        }
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
+
     }
 
 
