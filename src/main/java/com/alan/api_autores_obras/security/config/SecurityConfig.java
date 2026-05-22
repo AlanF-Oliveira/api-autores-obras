@@ -2,6 +2,11 @@ package com.alan.api_autores_obras.security.config;
 
 import com.alan.api_autores_obras.security.JwtAuthFilter;
 import com.alan.api_autores_obras.security.UsuarioDetailsService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +23,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@OpenAPIDefinition(info = @Info(title = "API Autores e Obras", version = "v1"))
+@SecurityScheme(name = SecurityConfig.SECURITY_SCHEME, type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class SecurityConfig {
+
+    public static final String SECURITY_SCHEME = "bearerAuth";
     private final JwtAuthFilter jwtAuthFilter;
     private final UsuarioDetailsService usuarioDetailsService;
 
@@ -27,7 +36,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/auth/cadastrar", "/auth/entrar").permitAll()
                         .anyRequest().authenticated()
                 )
