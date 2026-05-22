@@ -2,6 +2,7 @@ package com.alan.api_autores_obras.service;
 
 import com.alan.api_autores_obras.dto.auth.CadastroRequest;
 import com.alan.api_autores_obras.entity.Usuario;
+import com.alan.api_autores_obras.exception.ConflictException;
 import com.alan.api_autores_obras.repository.UsuarioRepository;
 import com.alan.api_autores_obras.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AuthService {
 
 
     public Usuario cadastrarUsuario(CadastroRequest request){
-        Usuario
+        usuarioRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ConflictException("Email existente!"));
     }
 
 
