@@ -4,9 +4,11 @@ import com.alan.api_autores_obras.dto.obra.ObraRequest;
 import com.alan.api_autores_obras.dto.obra.ObraResponse;
 import com.alan.api_autores_obras.dto.obra.ObraResumeResponse;
 import com.alan.api_autores_obras.dto.obra.ObraUpdateRequest;
+import com.alan.api_autores_obras.security.config.SecurityConfig;
 import com.alan.api_autores_obras.service.ObraService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/obra")
 @Tag(name = "Obra", description = "Gerenciamento de obras")
+@SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class ObraController {
     private final ObraService obraService;
 
