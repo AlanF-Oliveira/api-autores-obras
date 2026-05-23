@@ -4,9 +4,11 @@ import com.alan.api_autores_obras.dto.autor.AutorRequest;
 import com.alan.api_autores_obras.dto.autor.AutorResponse;
 import com.alan.api_autores_obras.dto.autor.AutorResumeResponse;
 import com.alan.api_autores_obras.dto.autor.AutorUpdateRequest;
+import com.alan.api_autores_obras.security.config.SecurityConfig;
 import com.alan.api_autores_obras.service.AutorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/autor")
 @Tag(name = "Autor", description = "Gerenciamento de autores")
+@SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class AutorController {
     private final AutorService autorService;
 
