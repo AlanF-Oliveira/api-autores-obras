@@ -3,6 +3,7 @@ package com.alan.api_autores_obras.service;
 import com.alan.api_autores_obras.dto.autor.*;
 import com.alan.api_autores_obras.entity.Autor;
 import com.alan.api_autores_obras.entity.AutorFixture;
+import com.alan.api_autores_obras.exception.ResourceNotFoundException;
 import com.alan.api_autores_obras.mapper.AutorMapper;
 import com.alan.api_autores_obras.repository.AutorRepository;
 import com.alan.api_autores_obras.repository.ObraRepository;
@@ -88,4 +89,27 @@ public class AutorServiceTest {
         verify(mapper).toResponse(autor);
         verifyNoMoreInteractions(autorRepository, mapper);
     }
+
+    @Test
+    void naoDeveBuscarAutorPorIdInexistente(){
+        when(autorRepository.findById(1L)).thenReturn(Optional.empty());
+        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class,
+                () -> autorService.buscarAutorPorId(1L));
+        assertThat(e.getMessage(),is("Autor não encontrado"));
+        verify(autorRepository).findById(1L);
+        verifyNoInteractions(mapper);
+    }
+
+    @Test
+    void deveMostrarTodosOsAutores(){
+        when(autorRepository.findAll()).thenReturn(List.of(autor));
+        when(mapper.toResumoResponseList(List.of(autor))).thenReturn(List.of(autorResumeResponse));
+        List<AutorResumeResponse> resumeResponse = autorService.mostrarTodosOsAutores();
+        assertEquals(List.of(autorResumeResponse), resumeResponse);
+        verify(autorRepository).findAll();
+        verify(mapper).toResumoResponseList(List.of(autor));
+        verifyNoMoreInteractions(mapper, autorRepository);
+    }
+
+
 }
