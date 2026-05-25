@@ -111,5 +111,49 @@ public class AutorServiceTest {
         verifyNoMoreInteractions(mapper, autorRepository);
     }
 
+    @Test
+    void deveAtualizarAutor(){
+        when(autorRepository.findById(1L)).thenReturn(Optional.of(autor));
+        when(obraRepository.findAllById(autorUpdateRequest.getObrasId())).thenReturn(List.of());
+        when(autorRepository.save(autor)).thenReturn(autor);
+        when(mapper.toResponse(autor)).thenReturn(autorResponse);
+        AutorResponse autorResponseTest = autorService.atualizarAutor(1L, autorUpdateRequest);
+        assertEquals(autorResponse, autorResponseTest);
+        verify(autorRepository).findById(1L);
+        verify(obraRepository).findAllById(autorUpdateRequest.getObrasId());
+        verify(autorRepository).save(autor);
+        verify(mapper).toResponse(autor);
+        verifyNoMoreInteractions(autorRepository, mapper, obraRepository);
+    }
+
+    @Test
+    void naoDeveAtualizarAutorPorIdInexistente(){
+        when(autorRepository.findById(1L)).thenReturn(Optional.empty());
+        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class,
+                () -> autorService.atualizarAutor(1L, autorUpdateRequest));
+        assertThat(e.getMessage(),is("Autor não encontrado"));
+        verify(autorRepository).findById(1L);
+        verifyNoInteractions(mapper);
+    }
+
+    @Test
+    void deveDeletarAutorPorId(){
+        when(autorRepository.findById(1L)).thenReturn(Optional.of(autor));
+        when(autorRepository.save(autor)).thenReturn(autor);
+        autorService.deletarAutorPorId(1L);
+        verify(autorRepository).findById(1L);
+        verify(autorRepository).save(autor);
+        verify(autorRepository).delete(autor);
+        verifyNoMoreInteractions(autorRepository, mapper);
+    }
+
+    @Test
+    void naoDeveDeletarAutorPorIdInexistente(){
+        when(autorRepository.findById(1L)).thenReturn(Optional.empty());
+        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class,
+                () -> autorService.deletarAutorPorId(1L));
+        assertThat(e.getMessage(), is("Autor não encontrado"));
+        verify(autorRepository).findById(1L);
+    }
 
 }
