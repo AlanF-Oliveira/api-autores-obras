@@ -46,7 +46,7 @@ public class AutorServiceTest {
     AutorUpdateRequest autorUpdateRequest;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         autor = AutorFixture.build();
         autorRequest = AutorRequestFixture.build();
         autorResponse = AutorResponseFixture.build();
