@@ -39,7 +39,7 @@ public class ObraService {
         entity.setAutores(autores);
         obraRepository.save(entity);
         autores.forEach(autor -> autor.getObras().add(entity));
-        autorRepository.saveAll(autores);
+       autorRepository.saveAll(autores);
         return mapper.toResponse(entity);
     }
 
